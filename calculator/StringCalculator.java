@@ -4,47 +4,48 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringCalculator {
-    String pattern = "//(.+)\\n(.*)";
-    public String[] patternSplit(String param) {
-        Matcher m = Pattern.compile(pattern).matcher(param);
-        String[] tokens = {""}; // 이런 배열은 초기화를? 이게 맞나..
-        if (m.find()) {
-            String customDelimiter = m.group(1);
-            tokens = m.group(2).split(customDelimiter);
-        } //TODO: match 결과가 없을 때 어떻게 분류?
-        return tokens;
+    String customPattern = "//(.+)\\n(.*)";
+
+    public int sum(String param) {
+        if (param == null || param.isEmpty()) {
+            return 0;
+        }
+        return sum(stringToInts(split(param)));
     }
 
-    public String[] split(String param) {
-        String[] splitedString = {""};
-        if (param.contains(":")) {
-            splitedString = param.split(":");
+    private int[] stringToInts(String[] splitedString) {
+        int[] numbers = new int[splitedString.length];
+        for (int i = 0; i < splitedString.length; i++){
+            numbers[i] = toInt(splitedString[i]);
         }
-        else if (param.contains(",")) {
-            splitedString = param.split(",");
-        }
-        return splitedString;
+        return numbers;
     }
 
-    public int sumSplitedString(String[] splitedString) {
+    private int toInt(String param) {
+        int num = Integer.parseInt(param);
+        if (num < 0) {
+            throw new RuntimeException();
+        }
+        return num;
+    }
+
+    private int sum(int[] numbers) {
         int sum = 0;
-        for (String str: splitedString){
-            int num = Integer.parseInt(str);
-            sum += num;
+        for (int number: numbers) {
+            sum += number;
         }
         return sum;
     }
 
-    public int sum(String param) {
-        String[] splitedString = {""};
-        if (param.matches(pattern)) {
-            splitedString = patternSplit(param);
+    private String[] split(String param) {
+        Matcher m = Pattern.compile(customPattern).matcher(param);
+        if (m.find()) {
+            String customDelimiter = m.group(1);
+            return m.group(2).split(customDelimiter);
         }
-        else {
-            splitedString = split(param);
-        }
-        return sumSplitedString(splitedString);
+        return param.split("[,:]");
     }
+
 
 
 

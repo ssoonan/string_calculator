@@ -1,7 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 import calculator.StringCalculator;
 import org.junit.After;
 import org.junit.Before;
@@ -16,24 +15,19 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void splitTest() {
-        String[] result = strCal.split("1,2");
-        String[] expectedResult = {"1", "2"};
-        assertArrayEquals(expectedResult, result);
+    public void add_null() {
+        assertEquals(0, strCal.sum(null));
+        assertEquals(0, strCal.sum(""));
     }
 
     @Test
-    public void customPatternSplitTest() {
-        String[] result = strCal.patternSplit("//;;\n1;;2");
-        String[] expectedResult = {"1", "2"};
-        assertArrayEquals(expectedResult, result);
+    public void add_single_num() {
+        assertEquals(1, strCal.sum("1"));
     }
 
-    @Test
-    public void SumTest() {
-        String[] stringArray = {"1", "2"};
-        int sum = strCal.sumSplitedString(stringArray);
-        assertEquals(3, sum);
+    @Test(expected = RuntimeException.class)
+    public void add_negative() throws Exception {
+        strCal.sum("-1,2,3");
     }
 
     @Test
