@@ -10,7 +10,7 @@ public class StringCalculator {
         if (param == null || param.isEmpty()) {
             return 0;
         }
-        return sum(stringToInts(split(param)));
+        return intSum(stringToInts(split(param)));
     }
 
     private int[] stringToInts(String[] splitedString) {
@@ -29,7 +29,7 @@ public class StringCalculator {
         return num;
     }
 
-    private int sum(int[] numbers) {
+    private int intSum(int[] numbers) {
         int sum = 0;
         for (int number: numbers) {
             sum += number;
